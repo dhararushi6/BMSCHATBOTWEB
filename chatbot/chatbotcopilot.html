@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Achievo – Academic Chatbot Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/96/000000/chatbot.png">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #6366f1;
+      --accent: #8b5cf6;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #111827;
+      --text-light: #374151;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 14px;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+      margin: 0;
+      padding: 20px 16px;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    /* Header with logo */
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+
+    .logo {
+      height: 60px;
+      width: auto;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: left;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      color: var(--accent);
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    header h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    header .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Main chatbox */
+    .chatbox {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 24px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .chatbox:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Intro section */
+    .intro {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
+      border-radius: var(--radius);
+      border-left: 5px solid var(--primary);
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .intro-text {
+      flex: 1;
+    }
+
+    .intro-text h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--primary);
+    }
+
+    .intro-text p {
+      font-size: 1rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* Category selection */
+    .category-section {
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title i {
+      color: var(--primary);
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .category-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--secondary);
+    }
+
+    .category-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .category-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .category-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Questions grid */
+    .questions-section {
+      margin-bottom: 28px;
+      display: none; /* Hidden by default */
+    }
+
+    .questions-section.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .questions-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: #f3f4f6;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: #e5e7eb;
+      transform: translateX(-2px);
+    }
+
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .question-btn {
+      width: 100%;
+      text-align: left;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      color: var(--text);
+    }
+
+    .question-btn:hover {
+      background: #f0f4ff;
+      border-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
+      color: var(--text);
+    }
+
+    .question-btn:active {
+      transform: translateY(0);
+    }
+
+    .question-num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-size: 0.8rem;
+      margin-right: 10px;
+      font-weight: 600;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      transition: all 0.2s;
+      color: var(--text);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      color: var(--text);
+    }
+
+    button {
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, var(--secondary), #9d7af0);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* Answer area */
+    .answer {
+      margin-top: 32px;
+      padding: 24px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+      border: 1px solid var(--border);
+      animation: fadeIn 0.4s ease;
+      display: none;
+      color: var(--text);
+    }
+
+    .answer.show {
+      display: block;
+    }
+
+    .answer-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .answer-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 22px;
+    }
+
+    .answer-agent {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    .answer-tag {
+      font-size: 0.85rem;
+      background: var(--primary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-left: 10px;
+    }
+
+    .answer-content {
+      line-height: 1.7;
+      color: var(--text);
+      padding-left: 62px;
+    }
+
+    .answer-content strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .answer-content p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .answer-content ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .answer-content li {
+      margin-bottom: 8px;
+      position: relative;
+      color: var(--text);
+    }
+
+    .answer-content li:before {
+      content: "•";
+      color: var(--primary);
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      border-top: 1px solid var(--border);
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Progress indicator */
+    .progress-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .progress-step {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d1d5db;
+      transition: all 0.3s ease;
+    }
+
+    .progress-step.active {
+      background: var(--primary);
+      transform: scale(1.3);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 10px;
+      }
+      
+      .chatbox {
+        padding: 20px;
+      }
+      
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .questions-grid {
+        grid-template-columns: 1fr;
+      }
+      .logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin: 0;
+  background: linear-gradient(90deg, #1e3c72, #2a5298);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tagline {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-top: -4px;
+  letter-spacing: 0.6px;
+}
+
+      .logo-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .logo-text {
+        text-align: center;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+      
+      .answer-content {
+        padding-left: 0;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, var(--primary), var(--accent));
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <!-- BMS College Logo (placeholder - replace with actual logo URL) -->
+       <img src="images/bmsce-logo.png" alt="BMS College Logo" class="logo">
+
+
+          <div class="logo-text">
+  <h1 class="brand">Achievo</h1>
+  <span class="tagline">Your College Companion</span>
+</div>
+
+        </div>
+      </div>
+      <h1>Your College Companion</h1>
+      <div class="subtitle">
+        Personalized guidance for college students on time management, exam stress, studies, and balancing life away from home
+      </div>
+    </header>
+    <div class="chatbox">
+      <div class="intro">
+        <div class="avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="intro-text">
+          <h3>Hey, I'm Lexi 👋</h3>
+          <p>Your personal academic assistant here to help with college challenges. First select a category, then choose a specific question for personalized guidance.</p>
+        </div>
+      </div>
+
+      <!-- Progress indicator -->
+      <div class="progress-indicator">
+        <div class="progress-step active" id="step1"></div>
+        <div class="progress-step" id="step2"></div>
+      </div>
+
+      <!-- Category Selection (Step 1) -->
+      <div class="category-section" id="categorySection">
+        <div class="section-title">
+          <i class="fas fa-list"></i>
+          <span>What would you like help with today?</span>
+        </div>
+        
+        <div class="categories-grid" id="categoriesList">
+          <div class="category-card" data-category="time-management">
+            <div class="category-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <h3>Time Management</h3>
+            <p>Balancing classes, study, work and social life</p>
+          </div>
+          
+          <div class="category-card" data-category="stress-management">
+            <div class="category-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3>Stress Management</h3>
+            <p>Coping with anxiety, pressure and overwhelm</p>
+          </div>
+          
+          <div class="category-card" data-category="study-techniques">
+            <div class="category-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3>Study Techniques</h3>
+            <p>Effective learning, note-taking and exam prep</p>
+          </div>
+          
+          <div class="category-card" data-category="college-life">
+            <div class="category-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <h3>College Life</h3>
+            <p>Adjusting to campus, friends, and living away</p>
+          </div>
+          
+          <div class="category-card" data-category="exam-preparation">
+            <div class="category-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>Exam Preparation</h3>
+            <p>Strategies for tests, finals and performance</p>
+          </div>
+          
+          <div class="category-card" data-category="wellness">
+            <div class="category-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <h3>Health & Wellness</h3>
+            <p>Maintaining physical and mental health</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Questions Section (Step 2) -->
+      <div class="questions-section" id="questionsSection">
+        <div class="questions-header">
+          <button class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Categories
+          </button>
+          <div class="section-title">
+            <i class="fas fa-question-circle"></i>
+            <span id="questionsTitle">Select a Question</span>
+          </div>
+        </div>
+        
+        <div class="questions-grid" id="questionsList">
+          <!-- Questions will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <div class="controls">
+        <input type="text" id="qInput" placeholder="Or type your question directly here...">
+        <button id="askBtn">
+          <i class="fas fa-paper-plane"></i>
+          Ask Lexi
+        </button>
+      </div>
+
+      <div id="answerArea" class="answer">
+        <div class="answer-header">
+          <div class="answer-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div>
+            <span class="answer-agent">Lexi replies</span>
+            <span class="answer-tag" id="answerCategory">General Advice</span>
+          </div>
+        </div>
+        <div class="answer-content" id="answerText">
+          <!-- Answer will appear here -->
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 Achievo • Chatbot Agent: Lexi • In collaboration with BMS College</p>
+      <p><a href="#" onclick="showAbout()">About Achievo</a> | <a href="#" onclick="showPrivacy()">Privacy Policy</a> | <a href="#" onclick="showContact()">Contact Support</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // Data structure for categories and questions
+    const categoriesData = {
+      "time-management": {
+        title: "Time Management Questions",
+        questions: [
+          { id: 1, text: "What's the most effective way to balance academics, part-time work, and social life?" },
+          { id: 2, text: "How can I create an effective weekly schedule that includes classes, study, and leisure?" },
+          { id: 3, text: "What's the best way to prioritize tasks when everything seems important?" },
+          { id: 4, text: "How do I break down large projects into manageable steps?" },
+          { id: 5, text: "How can I use technology effectively to manage my time and tasks?" },
+          { id: 6, text: "How do I avoid procrastination when assignments feel overwhelming?" }
+        ]
+      },
+      "stress-management": {
+        title: "Stress Management Questions",
+        questions: [
+          { id: 7, text: "How can I manage exam anxiety without burning out?" },
+          { id: 8, text: "What are immediate techniques to calm down during a panic attack before an exam?" },
+          { id: 9, text: "How do I handle academic pressure from parents and high expectations?" },
+          { id: 10, text: "What are healthy ways to cope with academic failure or low grades?" },
+          { id: 11, text: "How can I reduce stress when I have multiple deadlines approaching?" },
+          { id: 12, text: "How do I prevent burnout while juggling multiple responsibilities?" },
+          { id: 13, text: "What are signs that I should seek professional help for my stress levels?" }
+        ]
+      },
+      "study-techniques": {
+        title: "Study Techniques Questions",
+        questions: [
+          { id: 14, text: "How do I stay consistent with studying across the semester?" },
+          { id: 15, text: "What are effective note-taking strategies for different subjects?" },
+          { id: 16, text: "How can I improve my concentration and focus during long study sessions?" },
+          { id: 17, text: "What are the best methods for memorizing complex information?" },
+          { id: 18, text: "How do I study effectively for subjects I find difficult or boring?" },
+          { id: 19, text: "What's the difference between active and passive learning, and which is better?" }
+        ]
+      },
+      "college-life": {
+        title: "College Life Questions",
+        questions: [
+          { id: 20, text: "How do I cope with homesickness and being away from family?" },
+          { id: 21, text: "How can I make meaningful connections and friends in a new college?" },
+          { id: 22, text: "How do I manage finances as a college student living away from home?" },
+          { id: 23, text: "How do I handle conflicts with roommates or classmates?" },
+          { id: 24, text: "What should I do if I'm feeling lonely or isolated on campus?" },
+          { id: 25, text: "How do I balance independence with asking for help when needed?" }
+        ]
+      },
+      "exam-preparation": {
+        title: "Exam Preparation Questions",
+        questions: [
+          { id: 26, text: "How do I prepare effectively for final exams in multiple subjects?" },
+          { id: 27, text: "What's the best way to review and revise before exams?" },
+          { id: 28, text: "How can I improve my test-taking skills and reduce mistakes?" },
+          { id: 29, text: "What should I do the night before and morning of an important exam?" },
+          { id: 30, text: "How do I manage time during exams to complete all questions?" },
+          { id: 31, text: "How can I stay motivated during long exam periods?" }
+        ]
+      },
+      "wellness": {
+        title: "Health & Wellness Questions",
+        questions: [
+          { id: 32, text: "How can I maintain a healthy lifestyle with a busy college schedule?" },
+          { id: 33, text: "What are quick and healthy meal options for busy students?" },
+          { id: 34, text: "How much sleep do I really need, and how can I improve my sleep quality?" },
+          { id: 35, text: "How can I incorporate exercise into my routine without it feeling like a chore?" },
+          { id: 36, text: "What are signs of mental health issues I should watch for in myself and friends?" },
+          { id: 37, text: "How do I establish healthy boundaries with friends and social commitments?" }
+        ]
+      }
+    };
+
+    // Sample responses for each question
+    const responses = {
+      1: {
+        category: "Time Management",
+        question: "What's the most effective way to balance academics, part-time work, and social life?",
+        answer: "<p><strong>Balancing multiple commitments requires strategic planning:</strong></p><p>1. <strong>Use a digital calendar</strong> - Block time for classes, study sessions, work shifts, and social activities. Color-code each category.</p><p>2. <strong>Practice time blocking</strong> - Assign specific hours for specific tasks rather than working on everything at once.</p><p>3. <strong>Learn to say no</strong> - You can't attend every social event; prioritize those most meaningful to you.</p><p>4. <strong>Combine activities when possible</strong> - Study with friends, or use commute time to review notes.</p><p>5. <strong>Communicate with employers and professors</strong> - Let them know about your commitments so they can offer flexibility during peak academic times.</p><p>6. <strong>Schedule downtime</strong> - Rest is essential for productivity; include it in your schedule.</p>"
+      },
+      2: {
+        category: "Time Management",
+        question: "How can I create an effective weekly schedule that includes classes, study, and leisure?",
+        answer: "<p><strong>An effective schedule balances all aspects of college life:</strong></p><p>1. <strong>Start with fixed commitments</strong> - Add classes, work shifts, and regular meetings first.</p><p>2. <strong>Block study time</strong> - Schedule 1-2 hours of study for each hour in class, spread throughout the week.</p><p>3. <strong>Include buffer time</strong> - Leave 15-30 minutes between activities for transitions and unexpected delays.</p><p>4. <strong>Schedule leisure intentionally</strong> - Block time for social activities, hobbies, and relaxation to prevent burnout.</p><p>5. <strong>Use time blocking</strong> - Group similar tasks together (all email responses, all reading assignments) to minimize context switching.</p><p>6. <strong>Plan meals and self-care</strong> - Include time for grocery shopping, cooking, exercise, and adequate sleep.</p><p>7. <strong>Review and adjust weekly</strong> - What worked? What didn't? Refine your schedule each Sunday for the coming week.</p><p>8. <strong>Use digital tools</strong> - Google Calendar, Notion, or dedicated student planner apps can help visualize and maintain your schedule.</p>"
+      },
+      3: {
+        category: "Time Management",
+        question: "What's the best way to prioritize tasks when everything seems important?",
+        answer: "<p><strong>Effective prioritization helps manage overwhelming task lists:</strong></p><p>1. <strong>Use the Eisenhower Matrix</strong> - Categorize tasks as: urgent/important, important/not urgent, urgent/not important, neither.</p><p>2. <strong>Consider deadlines and consequences</strong> - What happens if this isn't done? How flexible is the deadline?</p><p>3. <strong>Apply the 80/20 rule</strong> - Identify the 20% of tasks that will yield 80% of results or learning.</p><p>4. <strong>Break large projects into smaller tasks</strong> - Then prioritize those smaller steps.</p><p>5. <strong>Consider energy levels</strong> - Match difficult, important tasks with your peak energy times.</p><p>6. <strong>Use the ABCDE method</strong> - Label tasks A (must do), B (should do), C (nice to do), D (delegate), E (eliminate).</p><p>7. <strong>Limit daily priorities</strong> - Focus on 3-5 key tasks each day rather than an overwhelming list.</p><p>8. <strong>Re-evaluate regularly</strong> - Priorities change; review your task list daily or weekly.</p>"
+      },
+      4: {
+        category: "Time Management",
+        question: "How do I break down large projects into manageable steps?",
+        answer: "<p><strong>Breaking down projects prevents overwhelm and increases completion likelihood:</strong></p><p>1. <strong>Start with the end goal</strong> - Clearly define what the finished project should look like.</p><p>2. <strong>Work backward from the deadline</strong> - Mark the due date, then plan milestones leading up to it.</p><p>3. <strong>Divide into phases</strong> - Most projects have natural phases: research, planning, drafting, revising, finalizing.</p><p>4. <strong>Break phases into specific tasks</strong> - 'Research' becomes: find 5 sources, read each, take notes, identify key themes.</p><p>5. <strong>Estimate time for each task</strong> - Be realistic, then add 20% buffer time for unexpected delays.</p><p>6. <strong>Schedule tasks on your calendar</strong> - Assign specific days/times for each small task.</p><p>7. <strong>Focus on the next small step</strong> - When feeling overwhelmed, just focus on completing the next 30-minute task.</p><p>8. <strong>Celebrate milestones</strong> - Acknowledge completion of each phase before moving to the next.</p>"
+      },
+      5: {
+        category: "Time Management",
+        question: "How can I use technology effectively to manage my time and tasks?",
+        answer: "<p><strong>Technology can be a powerful productivity tool when used intentionally:</strong></p><p><strong>For task management:</strong></p><ul><li><strong>Trello or Asana</strong> for visual project boards</li><li><strong>Todoist or Microsoft To Do</strong> for simple task lists with priorities</li><li><strong>Notion</strong> for all-in-one workspace with databases</li></ul><p><strong>For time management:</strong></p><ul><li><strong>Google Calendar</strong> for scheduling and time blocking</li><li><strong>RescueTime</strong> to track where you spend digital time</li><li><strong>Forest or Focus Keeper</strong> for Pomodoro technique timers</li></ul><p><strong>For focus:</strong></p><ul><li><strong>Freedom or Cold Turkey</strong> to block distracting websites</li><li><strong>Noisli or Brain.fm</strong> for focus-enhancing sounds</li></ul><p><strong>For note-taking and organization:</strong></p><ul><li><strong>OneNote or Evernote</strong> for digital notebooks</li><li><strong>Zotero or Mendeley</strong> for reference management</li></ul><p><strong>Key principle:</strong> Use minimal tools that work for you rather than constantly switching between apps.</p>"
+      },
+      6: {
+        category: "Time Management",
+        question: "How do I avoid procrastination when assignments feel overwhelming?",
+        answer: "<p><strong>Overcoming procrastination starts with breaking tasks down:</strong></p><p>1. <strong>The 5-minute rule</strong> - Commit to working on a task for just 5 minutes. Often, starting is the hardest part.</p><p>2. <strong>Break it down</strong> - Divide large assignments into small, actionable steps (research, outline, draft section 1, etc.).</p><p>3. <strong>Eliminate distractions</strong> - Use website blockers during study time and keep your phone in another room.</p><p>4. <strong>Use the Pomodoro Technique</strong> - 25 minutes of focused work followed by a 5-minute break.</p><p>5. <strong>Create accountability</strong> - Share your deadlines with a study partner or use apps that track your progress.</p><p>6. <strong>Address perfectionism</strong> - Remember that 'done is better than perfect.' You can always revise later.</p>"
+      },
+      7: {
+        category: "Stress Management",
+        question: "How can I manage exam anxiety without burning out?",
+        answer: "<p><strong>Managing exam anxiety requires a balanced approach:</strong></p><p>1. <strong>Create a realistic study schedule</strong> - Break your material into manageable chunks with regular breaks (try the Pomodoro technique: 25 minutes study, 5 minutes break).</p><p>2. <strong>Practice mindfulness techniques</strong> - Deep breathing exercises, meditation apps, or short walks can reduce immediate anxiety.</p><p>3. <strong>Maintain physical health</strong> - Ensure adequate sleep (7-8 hours), balanced nutrition, and regular exercise to support cognitive function.</p><p>4. <strong>Use positive self-talk</strong> - Replace 'I can't do this' with 'I've prepared and will do my best.'</p><p>5. <strong>Simulate exam conditions</strong> - Practice with past papers under timed conditions to build confidence.</p><p>6. <strong>Reframe your perspective</strong> - View exams as an opportunity to demonstrate what you've learned, not as a threat.</p><p>7. <strong>Seek support</strong> - Talk to friends, family, or counseling services about your anxiety.</p><p>Remember, perfection isn't the goal - consistent effort is what matters most.</p>"
+      },
+      8: {
+        category: "Stress Management",
+        question: "What are immediate techniques to calm down during a panic attack before an exam?",
+        answer: "<p><strong>When panic strikes, these immediate techniques can help:</strong></p><p>1. <strong>5-4-3-2-1 Grounding Technique</strong> - Name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste.</p><p>2. <strong>Deep Breathing (4-7-8 method)</strong> - Inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds. Repeat 3-4 times.</p><p>3. <strong>Cold water technique</strong> - Splash cold water on your face or hold an ice cube to trigger the mammalian diving reflex, which slows heart rate.</p><p>4. <strong>Progressive muscle relaxation</strong> - Tense and release each muscle group from toes to head.</p><p>5. <strong>Focus on your senses</strong> - Describe an object in detail (color, texture, weight, purpose) to shift focus from panic.</p><p>6. <strong>Positive self-talk</strong> - Repeat calming phrases like 'This will pass' or 'I can handle this.'</p><p>7. <strong>Mini meditation</strong> - Close your eyes and focus only on your breathing for 60 seconds.</p><p><strong>After the immediate crisis:</strong> Consider seeking counseling services for long-term anxiety management strategies.</p>"
+      },
+      9: {
+        category: "Stress Management",
+        question: "How do I handle academic pressure from parents and high expectations?",
+        answer: "<p><strong>Managing external pressure requires both practical strategies and boundary setting:</strong></p><p>1. <strong>Open communication</strong> - Schedule a calm conversation with your parents about your current workload, challenges, and realistic goals.</p><p>2. <strong>Share your perspective</strong> - Help them understand the college environment today versus when they were students.</p><p>3. <strong>Set realistic expectations together</strong> - Discuss what 'success' means to you versus what it means to them.</p><p>4. <strong>Focus on effort, not just outcomes</strong> - Celebrate consistent study habits and improvement, not just grades.</p><p>5. <strong>Establish boundaries</strong> - Politely but firmly explain when certain comments are unhelpful or increase your stress.</p><p>6. <strong>Build your own support system</strong> - Develop relationships with professors, advisors, and peers who understand your academic journey.</p><p>7. <strong>Remember it's your education</strong> - While parental input is valuable, ultimately you're the one experiencing the challenges and earning the degree.</p><p>8. <strong>Seek counseling if needed</strong> - College counseling services can help mediate difficult conversations and develop coping strategies.</p>"
+      },
+      10: {
+        category: "Stress Management",
+        question: "What are healthy ways to cope with academic failure or low grades?",
+        answer: "<p><strong>Academic setbacks are learning opportunities when approached constructively:</strong></p><p>1. <strong>Allow yourself to feel</strong> - It's normal to feel disappointed, but don't dwell on negative emotions indefinitely.</p><p>2. <strong>Practice self-compassion</strong> - Talk to yourself as you would a friend who experienced a setback.</p><p>3. <strong>Analyze objectively</strong> - Review what went wrong without self-judgment: Was it preparation, understanding, time management, or external factors?</p><p>4. <strong>Seek feedback</strong> - Meet with your professor to understand where you lost points and how to improve.</p><p>5. <strong>Create an improvement plan</strong> - Based on feedback, develop specific strategies for the next assignment/exam.</p><p>6. <strong>Look at the bigger picture</strong> - One grade doesn't define your intelligence, worth, or future success.</p><p>7. <strong>Learn resilience</strong> - The ability to bounce back from setbacks is a crucial life skill being developed right now.</p><p>8. <strong>Consider academic support</strong> - Tutoring centers, study groups, or academic advisors can provide additional help.</p><p>9. <strong>Maintain balance</strong> - Don't let one setback consume your entire identity; maintain hobbies and social connections.</p>"
+      },
+      11: {
+        category: "Stress Management",
+        question: "How can I reduce stress when I have multiple deadlines approaching?",
+        answer: "<p><strong>Managing deadline stress requires both practical organization and mindset shifts:</strong></p><p>1. <strong>Create a visual timeline</strong> - List all deadlines with dates, then work backward to create mini-deadlines for each project phase.</p><p>2. <strong>Prioritize by due date and weight</strong> - Focus first on what's due soonest and carries the most grade percentage.</p><p>3. <strong>Break into micro-tasks</strong> - Divide each project into 30-60 minute tasks that feel manageable.</p><p>4. <strong>Communicate proactively</strong> - If you genuinely can't meet a deadline, contact professors early (not the day before) to discuss options.</p><p>5. <strong>Use the Pomodoro method</strong> - 25 minutes focused work, 5-minute break to maintain energy and focus.</p><p>6. <strong>Practice strategic neglect</strong> - Temporarily reduce non-essential activities (social media, non-urgent chores) during crunch time.</p><p>7. <strong>Maintain basic self-care</strong> - Even during busy periods, ensure minimum sleep (6 hours), regular meals, and short movement breaks.</p><p>8. <strong>Focus on one task at a time</strong> - Multitasking increases stress and reduces quality; single-tasking is more efficient.</p><p>9. <strong>After the crunch</strong> - Reflect on what made this period so stressful and adjust your planning for next semester.</p>"
+      },
+      12: {
+        category: "Stress Management",
+        question: "How do I prevent burnout while juggling multiple responsibilities?",
+        answer: "<p><strong>Preventing burnout requires proactive self-care:</strong></p><p>1. <strong>Set clear boundaries</strong> - Designate specific 'work-free' times and communicate these to others.</p><p>2. <strong>Practice the 80/20 rule</strong> - Focus on the 20% of efforts that yield 80% of results rather than perfection.</p><p>3. <strong>Schedule regular breaks</strong> - Include short breaks throughout the day and longer breaks weekly.</p><p>4. <strong>Monitor your energy levels</strong> - Notice when you're most productive and schedule demanding tasks accordingly.</p><p>5. <strong>Develop non-academic interests</strong> - Engage in hobbies completely unrelated to your studies.</p><p>6. <strong>Learn to delegate</strong> - When possible, share responsibilities in group projects or ask for help.</p><p>7. <strong>Listen to your body</strong> - Persistent fatigue, irritability, or lack of motivation are signals to slow down.</p><p>8. <strong>Practice saying no</strong> - You can't do everything; prioritize commitments that align with your goals.</p><p>9. <strong>Create a wind-down routine</strong> - Have a consistent evening routine to signal to your brain that work is done.</p><p>10. <strong>Seek support</strong> - Talk to friends, family, or counseling services when feeling overwhelmed.</p>"
+      },
+      13: {
+        category: "Stress Management",
+        question: "What are signs that I should seek professional help for my stress levels?",
+        answer: "<p><strong>It's important to recognize when stress has become unmanageable:</strong></p><p><strong>Emotional signs:</strong></p><ul><li>Persistent feelings of overwhelm, anxiety, or dread</li><li>Feeling emotionally numb or detached</li><li>Frequent crying spells or emotional outbursts</li><li>Loss of interest in activities you used to enjoy</li><li>Intense irritability or anger over minor things</li></ul><p><strong>Physical signs:</strong></p><ul><li>Significant changes in sleep (too much or too little)</li><li>Major appetite changes or unexplained weight changes</li><li>Frequent headaches, stomach issues, or other pains</li><li>Constant fatigue despite adequate rest</li><li>Frequent illness due to weakened immune system</li></ul><p><strong>Cognitive signs:</strong></p><ul><li>Difficulty concentrating or making decisions</li><li>Memory problems or 'brain fog'</li><li>Negative or catastrophic thinking patterns</li><li>Thoughts of self-harm or suicide</li></ul><p><strong>Behavioral signs:</strong></p><ul><li>Withdrawing from friends and social activities</li><li>Procrastination or neglecting responsibilities</li><li>Increased use of alcohol, drugs, or other substances</li><li>Avoiding situations that trigger anxiety</li></ul><p><strong>When to seek help:</strong> If these symptoms persist for 2+ weeks and interfere with daily functioning, contact your campus counseling center. They offer confidential, often free services for students.</p>"
+      },
+  // ... previous responses 1-13 ...
+
+  14: {
+    category: "Study Techniques",
+    question: "How do I stay consistent with studying across the semester",
+    answer: "<p><strong>Consistency is key for long-term academic success:</strong></p><p>1. <strong>Create a study schedule</strong> - Block out specific, regular study times each week rather than relying on 'when you feel like it.'</p><p>2. <strong>Start small</strong> - Begin with 30-minute daily sessions and gradually increase as the habit forms.</p><p>3. <strong>Use habit stacking</strong> - Pair studying with an existing habit (e.g., 'After my morning coffee, I'll review notes for 30 minutes').</p><p>4. <strong>Set weekly goals</strong> - Instead of vague 'study more' goals, aim for specific outcomes like 'complete 3 practice problems daily' or 'review notes after each class.'</p><p>5. <strong>Track your progress</strong> - Use a calendar or app to mark study days, creating a visual chain you won't want to break.</p><p>6. <strong>Study in the same place</strong> - This creates a mental association that makes it easier to get into 'study mode.'</p><p>7. <strong>Review material regularly</strong> - Use spaced repetition: review notes within 24 hours of class, then weekly, then before exams.</p><p>8. <strong>Find an accountability partner</strong> - Study with a friend or share your goals with someone who will check in on your progress.</p><p>9. <strong>Reward consistency</strong> - After a week of consistent studying, treat yourself to something enjoyable.</p>"
+  },
+  15: {
+    category: "Study Techniques",
+    question: "What are effective note-taking strategies for different subjects?",
+    answer: "<p><strong>Different subjects benefit from different note-taking approaches:</strong></p><p><strong>For conceptual subjects (philosophy, literature, theory-heavy courses):</strong></p><ul><li><strong>Cornell Method</strong> - Divide page into notes, cues, and summary sections</li><li><strong>Outline Method</strong> - Use indentation to show hierarchy of ideas</li><li><strong>Concept Mapping</strong> - Visual diagrams showing relationships between ideas</li></ul><p><strong>For technical subjects (math, sciences, engineering):</strong></p><ul><li><strong>Problem-Solution Format</strong> - Clearly separate problem statements from solution steps</li><li><strong>Annotated Examples</strong> - Copy worked examples with explanations of each step</li><li><strong>Formula Sheets</strong> - Create dedicated pages for formulas with context about when to use them</li></ul><p><strong>For lecture-based courses:</strong></p><ul><li><strong>Modified Cornell</strong> - Main ideas on left, details on right, summary at bottom</li><li><strong>Charting Method</strong> - Use columns to organize information by category</li><li><strong>Sentence Method</strong> - Write each new fact/concept as a separate sentence</li></ul><p><strong>Universal tips:</strong> Review notes within 24 hours, use abbreviations, leave space for additions, and synthesize rather than transcribe verbatim.</p>"
+  },
+  16: {
+    category: "Study Techniques",
+    question: "How can I improve my concentration and focus during long study sessions?",
+    answer: "<p><strong>Maintaining focus requires both environmental control and mental training:</strong></p><p>1. <strong>Use the Pomodoro Technique</strong> - 25 minutes focused work, 5-minute break. After 4 cycles, take a 15-30 minute break.</p><p>2. <strong>Create a distraction-free environment</strong> - Turn off phone notifications, use website blockers, and study in a clean, organized space.</p><p>3. <strong>Practice single-tasking</strong> - Focus on one subject or task at a time rather than switching between multiple.</p><p>4. <strong>Start with the most challenging task</strong> - Your willpower and focus are highest at the beginning of a study session.</p><p>5. <strong>Use active learning techniques</strong> - Instead of passive reading, create flashcards, teach concepts aloud, or solve problems.</p><p>6. <strong>Take strategic breaks</strong> - Get up, stretch, hydrate, or look at something distant to rest your eyes.</p><p>7. <strong>Check in with yourself</strong> - Every 30 minutes, ask 'Am I actually focused on this?' and gently redirect if needed.</p><p>8. <strong>Use focus tools</strong> - White noise apps, focus timers, or study-with-me videos can help maintain rhythm.</p><p>9. <strong>Practice mindfulness</strong> - When your mind wanders, acknowledge it without judgment and return to the task.</p><p>10. <strong>Consider your physical state</strong> - Study after adequate sleep, nutrition, and hydration for optimal cognitive function.</p>"
+  },
+  17: {
+    category: "Study Techniques",
+    question: "What are the best methods for memorizing complex information?",
+    answer: "<p><strong>Memorization works best when information is processed deeply and repeatedly:</strong></p><p>1. <strong>Spaced Repetition</strong> - Review information at increasing intervals (1 day, 3 days, 1 week, 1 month). Use apps like Anki or Quizlet.</p><p>2. <strong>Active Recall</strong> - Test yourself on material without looking at answers, which strengthens memory more than passive review.</p><p>3. <strong>Chunking</strong> - Break complex information into smaller, meaningful groups (e.g., memorizing 12-digit numbers as 3 groups of 4).</p><p>4. <strong>Mnemonics</strong> - Create acronyms, acrostics, or associations (e.g., 'My Very Educated Mother Just Served Us Nachos' for planets).</p><p>5. <strong>Method of Loci (Memory Palace)</strong> - Associate information with specific locations in a familiar place.</p><p>6. <strong>Create meaningful connections</strong> - Link new information to what you already know or create stories around concepts.</p><p>7. <strong>Use multiple senses</strong> - Write information, say it aloud, create diagrams, or use gestures to engage different memory pathways.</p><p>8. <strong>Teach someone else</strong> - Explaining concepts forces you to organize information meaningfully.</p><p>9. <strong>Create visual representations</strong> - Mind maps, flowcharts, or diagrams can make abstract concepts more concrete.</p><p>10. <strong>Sleep on it</strong> - Memory consolidation happens during sleep, so review before bed and get adequate rest.</p>"
+  },
+  18: {
+    category: "Study Techniques",
+    question: "How do I study effectively for subjects I find difficult or boring?",
+    answer: "<p><strong>Studying challenging or uninteresting subjects requires strategic approaches:</strong></p><p>1. <strong>Find the relevance</strong> - Connect the material to your goals, interests, or real-world applications, even if indirectly.</p><p>2. <strong>Change your environment</strong> - Study in a different location or with background music to make the experience more pleasant.</p><p>3. <strong>Use the Pomodoro Technique</strong> - Limit intense focus to 25-minute blocks with rewards after each session.</p><p>4. <strong>Gamify your studying</strong> - Set point systems, compete with yourself, or use study apps with game-like elements.</p><p>5. <strong>Find a study partner</strong> - Accountability and shared suffering can make difficult subjects more bearable.</p><p>6. <strong>Start with what you understand</strong> - Build confidence by reviewing familiar concepts before tackling challenging ones.</p><p>7. <strong>Create curiosity</strong> - Ask questions about the material or research interesting applications outside the syllabus.</p><p>8. <strong>Use varied methods</strong> - Alternate between reading, watching videos, solving problems, and creating flashcards.</p><p>9. <strong>Set specific, achievable goals</strong> - Instead of 'study chemistry,' aim for 'complete 10 practice problems on chemical bonds.'</p><p>10. <strong>Seek alternative explanations</strong> - If your textbook is confusing, find YouTube tutorials, podcasts, or alternative textbooks on the same topic.</p><p>11. <strong>Consult your professor or TA</strong> - Sometimes understanding 'why this matters' from an expert can increase engagement.</p>"
+  },
+  19: {
+    category: "Study Techniques",
+    question: "What's the difference between active and passive learning, and which is better?",
+    answer: "<p><strong>Active and passive learning represent different levels of cognitive engagement:</strong></p><p><strong>Passive Learning:</strong> Receiving information without interacting with it.</p><ul><li><strong>Examples:</strong> Listening to lectures, reading textbooks without note-taking, watching educational videos passively</li><li><strong>Benefits:</strong> Efficient for initial exposure, less mentally taxing, good for broad overviews</li><li><strong>Drawbacks:</strong> Lower retention rates (10-30%), creates illusion of competence, less transferable to new contexts</li></ul><p><strong>Active Learning:</strong> Engaging with material through thinking, doing, and applying.</p><ul><li><strong>Examples:</strong> Practice problems, self-quizzing, teaching concepts to others, creating study guides, discussing material</li><li><strong>Benefits:</strong> Higher retention rates (70-90%), develops critical thinking, better application to new situations</li><li><strong>Drawbacks:</strong> More time-consuming, requires more mental effort, can feel slower initially</li></ul><p><strong>Which is better?</strong> Active learning is generally more effective for long-term retention and application. However, the most effective approach combines both:</p><p>1. <strong>Start with passive learning</strong> for initial exposure to new material.</p><p>2. <strong>Quickly transition to active methods</strong> to process and retain information.</p><p>3. <strong>Use the 80/20 rule</strong> - Spend 20% of study time on passive learning and 80% on active practice.</p><p>4. <strong>Tailor to the subject</strong> - Some subjects (like languages or math) benefit from more active practice, while others might start with more passive overview.</p>"
+  },
+  20: {
+    category: "College Life",
+    question: "How do I cope with homesickness and being away from family?",
+    answer: "<p><strong>Homesickness is a normal transition experience that most students face:</strong></p><p>1. <strong>Acknowledge your feelings</strong> - It's okay to miss home; don't judge yourself for feeling this way.</p><p>2. <strong>Create a home away from home</strong> - Decorate your room with familiar items, photos, or objects that comfort you.</p><p>3. <strong>Establish new routines</strong> - Create daily or weekly rituals that give structure and familiarity.</p><p>4. <strong>Stay connected but not overly dependent</strong> - Schedule regular calls with family but avoid calling multiple times daily.</p><p>5. <strong>Bring home to college</strong> - Cook family recipes, continue traditions, or watch familiar shows.</p><p>6. <strong>Get involved on campus</strong> - Join clubs, attend events, and make connections to build your new community.</p><p>7. <strong>Explore your new environment</strong> - Discover local coffee shops, parks, or attractions to build positive associations.</p><p>8. <strong>Help others</strong> - Sometimes supporting other homesick students can alleviate your own feelings.</p><p>9. <strong>Give it time</strong> - Most homesickness peaks in the first 6-8 weeks and gradually decreases.</p><p>10. <strong>Seek support if needed</strong> - If homesickness interferes with daily functioning, talk to a counselor or resident advisor.</p><p>11. <strong>Plan visits home strategically</strong> - Wait at least 4-6 weeks before your first visit home to allow adjustment.</p>"
+  },
+  21: {
+    category: "College Life",
+    question: "How can I make meaningful connections and friends in a new college?",
+    answer: "<p><strong>Building friendships in college requires initiative and openness:</strong></p><p>1. <strong>Attend orientation events</strong> - Everyone is new and looking to connect during the first weeks.</p><p>2. <strong>Join clubs or organizations</strong> - Shared interests provide natural conversation starters and regular interaction.</p><p>3. <strong>Talk to classmates</strong> - Sit in the same area each class and arrive a few minutes early to chat.</p><p>4. <strong>Leave your door open</strong> (if in dorms) - This signals openness to interaction with hallmates.</p><p>5. <strong>Ask questions and listen actively</strong> - People appreciate genuine interest in their lives.</p><p>6. <strong>Accept invitations</strong> - Even if you're tired or unsure, say yes to social opportunities.</p><p>7. <strong>Organize low-pressure activities</strong> - Suggest group study sessions, coffee breaks, or watching a game together.</p><p>8. <strong>Use campus resources</strong> - Many colleges have friendship-matching programs or social events for specific interests.</p><p>9. <strong>Be patient</strong> - Meaningful friendships take time to develop; don't expect instant best friends.</p><p>10. <strong>Be yourself</strong> - Authenticity attracts compatible friends more than trying to fit a certain mold.</p><p>11. <strong>Follow up</strong> - If you have a good conversation, suggest meeting for lunch or studying together later.</p><p>12. <strong>Consider part-time jobs or volunteering</strong> - These provide structured social interaction with shared purpose.</p>"
+  },
+  22: {
+    category: "College Life",
+    question: "How do I manage finances as a college student living away from home?",
+    answer: "<p><strong>Financial management is a crucial college survival skill:</strong></p><p>1. <strong>Create a realistic budget</strong> - List all income (grants, loans, family support, job) and expenses (tuition, rent, food, transportation, books, personal).</p><p>2. <strong>Track every expense for one month</strong> - Use a budgeting app or spreadsheet to identify spending patterns.</p><p>3. <strong>Prioritize needs over wants</strong> - Essentials (rent, groceries, utilities) come before entertainment and dining out.</p><p>4. <strong>Use student discounts</strong> - Many businesses offer student pricing; always ask and carry your student ID.</p><p>5. <strong>Cook at home</strong> - Eating out is significantly more expensive; meal prep with roommates can save money and time.</p><p>6. <strong>Buy used textbooks</strong> - Use campus book exchanges, online marketplaces, or rental services instead of campus bookstores.</p><p>7. <strong>Limit credit card use</strong> - If you have a card, pay the balance in full each month to avoid high-interest debt.</p><p>8. <strong>Find free entertainment</strong> - Campus events, student clubs, parks, and community activities often have no cost.</p><p>9. <strong>Build a small emergency fund</strong> - Aim to save $500-1000 for unexpected expenses.</p><p>10. <strong>Consider a part-time job</strong> - On-campus jobs often work around student schedules and provide valuable experience.</p><p>11. <strong>Review bank statements monthly</strong> - Check for errors or unwanted subscriptions draining your account.</p><p>12. <strong>Learn basic financial literacy</strong> - Many campuses offer workshops on budgeting, credit, and student loans.</p>"
+  },
+  23: {
+    category: "College Life",
+    question: "How do I handle conflicts with roommates or classmates?",
+    answer: "<p><strong>Conflict resolution is an essential adult skill you'll develop in college:</strong></p><p>1. <strong>Address issues early</strong> - Don't let resentment build; discuss concerns when they're small.</p><p>2. <strong>Choose the right time and place</strong> - Have difficult conversations privately when both parties are calm.</p><p>3. <strong>Use 'I' statements</strong> - Instead of 'You're always messy,' say 'I feel stressed when common areas are cluttered.'</p><p>4. <strong>Focus on specific behaviors</strong> - Address actions rather than personality traits.</p><p>5. <strong>Listen actively</strong> - Try to understand their perspective before responding.</p><p>6. <strong>For roommates: Create agreements</strong> - Discuss cleaning schedules, quiet hours, guest policies, and shared expenses upfront.</p><p>7. <strong>Find compromise</strong> - Look for solutions that address both parties' core needs.</p><p>8. <strong>Document agreements</strong> - Write down what you've decided to prevent future misunderstandings.</p><p>9. <strong>Know when to involve mediators</strong> - Resident advisors, professors, or campus counseling can help with persistent conflicts.</p><p>10. <strong>Pick your battles</strong> - Not every annoyance needs confrontation; distinguish between preferences and deal-breakers.</p><p>11. <strong>Practice empathy</strong> - College is stressful for everyone; your roommate/classmate might be dealing with challenges you don't see.</p><p>12. <strong>Have an exit strategy</strong> - Know the process for changing roommates or study groups if the situation becomes untenable.</p>"
+  },
+  24: {
+    category: "College Life",
+    question: "What should I do if I'm feeling lonely or isolated on campus?",
+    answer: "<p><strong>Loneliness in college is common but manageable with proactive steps:</strong></p><p>1. <strong>Recognize it's normal</strong> - Many students feel lonely, especially during transitions; you're not alone in feeling alone.</p><p>2. <strong>Start small</strong> - Don't pressure yourself to make deep connections immediately; begin with casual interactions.</p><p>3. <strong>Attend campus events alone</strong> - It's easier to meet people when you're not in a closed group.</p><p>4. <strong>Use campus resources</strong> - Counseling centers, religious organizations, and student activities offices often have social programs.</p><p>5. <strong>Join something</strong> - Clubs, intramural sports, volunteer groups, or academic organizations provide built-in communities.</p><p>6. <strong>Study in public spaces</strong> - Libraries, student centers, or coffee shops offer low-pressure social environments.</p><p>7. <strong>Reach out to classmates</strong> - Form study groups or suggest getting coffee after class.</p><p>8. <strong>Consider a part-time job on campus</strong> - Workplace relationships can develop naturally.</p><p>9. <strong>Limit social media comparison</strong> - Remember people often post highlight reels, not their lonely moments.</p><p>10. <strong>Volunteer</strong> - Helping others provides purpose and connection.</p><p>11. <strong>Be a regular somewhere</strong> - Frequent the same coffee shop, gym class, or study spot to become a familiar face.</p><p>12. <strong>Seek professional help if needed</strong> - If loneliness becomes depression or severe anxiety, counseling services can help.</p><p>13. <strong>Give it time</strong> - Meaningful connections often develop after repeated, low-pressure interactions.</p>"
+  },
+  25: {
+    category: "College Life",
+    question: "How do I balance independence with asking for help when needed?",
+    answer: "<p><strong>Finding the right balance between self-reliance and seeking support is a key college skill:</strong></p><p>1. <strong>Distinguish between 'can't' and 'won't'</strong> - Try genuinely first, then ask for help if you're truly stuck.</p><p>2. <strong>Use the 15-minute rule</strong> - Attempt a problem for 15 minutes independently before seeking assistance.</p><p>3. <strong>Know available resources</strong> - Familiarize yourself with tutoring centers, writing labs, professors' office hours, and academic advisors.</p><p>4. <strong>Ask specific questions</strong> - Instead of 'I don't get it,' say 'I understand X and Y, but I'm confused about Z.'</p><p>5. <strong>Schedule help proactively</strong> - Don't wait until the night before a deadline; seek assistance early in the process.</p><p>6. <strong>Build a support network</strong> - Develop relationships with professors, TAs, and peers you can turn to when needed.</p><p>7. <strong>Practice self-advocacy</strong> - Learn to articulate your needs clearly and respectfully.</p><p>8. <strong>Recognize that asking for help IS a skill</strong> - It demonstrates maturity, self-awareness, and commitment to learning.</p><p>9. <strong>Offer help to others</strong> - Creating reciprocal relationships makes asking for help feel more natural.</p><p>10. <strong>Reflect on what you learn from help</strong> - The goal is to become more independent over time by learning from assistance.</p><p>11. <strong>Know when professional help is needed</strong> - For mental health, serious academic struggles, or major life decisions, seek expert guidance.</p><p>12. <strong>Balance is dynamic</strong> - Some weeks you'll need more help, others less; adjust as needed without self-judgment.</p>"
+  },
+  26: {
+    category: "Exam Preparation",
+    question: "How do I prepare effectively for final exams in multiple subjects?",
+    answer: "<p><strong>Effective exam preparation requires strategic planning across all subjects:</strong></p><p>1. <strong>Create a master calendar</strong> - List all exam dates, then work backward to allocate study time for each subject.</p><p>2. <strong>Prioritize by difficulty and timing</strong> - Focus more on challenging subjects or those with earlier exams first.</p><p>3. <strong>Use interleaved practice</strong> - Alternate between subjects during study sessions rather than blocking entire days for one subject.</p><p>4. <strong>Start early</strong> - Begin review 2-3 weeks before exams, not days before.</p><p>5. <strong>Create study guides for each subject</strong> - Synthesize material into concise summaries, formulas, and key concepts.</p><p>6. <strong>Practice actively</strong> - Use past exams, create flashcards, solve problems, and teach concepts to others.</p><p>7. <strong>Form study groups strategically</strong> - Meet with peers to quiz each other, but ensure the group stays focused.</p><p>8. <strong>Schedule intensive review sessions</strong> - Plan 2-3 hour focused sessions for each subject in the week before its exam.</p><p>9. <strong>Use different study methods for different subjects</strong> - Problem-solving for math/science, essay outlines for humanities, memorization techniques for facts-heavy courses.</p><p>10. <strong>Take care of your body</strong> - Maintain regular sleep, exercise, and nutrition during exam periods for optimal cognitive function.</p><p>11. <strong>Plan breaks between exams</strong> - Schedule short recovery periods after each exam before starting the next subject.</p><p>12. <strong>Review strategically</strong> - Focus on high-yield topics and areas where you're weakest.</p>"
+  },
+  27: {
+    category: "Exam Preparation",
+    question: "What's the best way to review and revise before exams?",
+    answer: "<p><strong>Effective revision transforms familiar material into retained knowledge:</strong></p><p>1. <strong>Start with active recall</strong> - Test yourself on material before looking at notes to identify knowledge gaps.</p><p>2. <strong>Use spaced repetition</strong> - Review material at increasing intervals rather than cramming.</p><p>3. <strong>Create summary sheets</strong> - Condense each topic onto one page with key concepts, formulas, and connections.</p><p>4. <strong>Practice with past exams</strong> - Simulate exam conditions with timing to identify weak areas.</p><p>5. <strong>Explain concepts aloud</strong> - Teaching material to an imaginary student or study partner reveals what you truly understand.</p><p>6. <strong>Focus on connections</strong> - Understand how different concepts relate rather than memorizing isolated facts.</p><p>7. <strong>Use different revision methods</strong> - Alternate between written practice, verbal explanation, visual diagrams, and application problems.</p><p>8. <strong>Prioritize problem areas</strong> - Spend more time on topics you find difficult rather than reviewing what you already know well.</p><p>9. <strong>Create mnemonics for lists</strong> - Develop memory aids for sequences, classifications, or steps in processes.</p><p>10. <strong>Review with peers</strong> - Discussing and debating concepts with classmates deepens understanding.</p><p>11. <strong>Simulate exam conditions</strong> - Practice with time limits, no notes, and similar question formats.</p><p>12. <strong>Plan your final review</strong> - Create a 1-2 day plan before each exam focusing on quick review of key points rather than learning new material.</p>"
+  },
+  28: {
+    category: "Exam Preparation",
+    question: "How can I improve my test-taking skills and reduce mistakes?",
+    answer: "<p><strong>Test-taking is a skill that improves with strategy and practice:</strong></p><p><strong>Before the exam:</strong></p><ul><li><strong>Practice with past papers</strong> under timed conditions</li><li><strong>Learn the format</strong> - Know what types of questions to expect</li><li><strong>Get adequate sleep</strong> the night before (cramming often backfires)</li></ul><p><strong>During the exam:</strong></p><p>1. <strong>Preview the entire test</strong> - Note point values and allocate time accordingly.</p><p>2. <strong>Start with what you know</strong> - Build confidence and secure easy points first.</p><p>3. <strong>Read instructions carefully</strong> - Note if questions require showing work, specific formats, or have special instructions.</p><p>4. <strong>Watch for keywords</strong> - 'Compare,' 'contrast,' 'analyze,' 'describe' each require different approaches.</p><p>5. <strong>Show your work</strong> - Even if the answer is wrong, partial credit is often given for correct steps.</p><p>6. <strong>Manage time proactively</strong> - Check the clock regularly and adjust pace.</p><p>7. <strong>Answer every question</strong> - Unless there's a penalty for wrong answers, make an educated guess.</p><p>8. <strong>Review strategically</strong> - Check calculations, ensure you answered what was asked, and verify you didn't misread questions.</p><p>9. <strong>Change answers cautiously</strong> - Only change an answer if you have a definite reason, not just doubt.</p><p>10. <strong>Look for clues</strong> - Sometimes information in one question helps with another.</p><p><strong>Common mistake reducers:</strong> Write legibly, use all allotted time, double-check your work, and stay calm through breathing techniques if anxious.</p>"
+  },
+  29: {
+    category: "Exam Preparation",
+    question: "What should I do the night before and morning of an important exam?",
+    answer: "<p><strong>The final 24 hours significantly impact exam performance:</strong></p><p><strong>The night before:</strong></p><p>1. <strong>Light review only</strong> - Go over summary sheets or key concepts for 1-2 hours maximum.</p><p>2. <strong>Avoid learning new material</strong> - Focus on reinforcing what you already know.</p><p>3. <strong>Prepare materials</strong> - Gather required items (ID, calculator, pencils, allowed notes) to avoid morning stress.</p><p>4. <strong>Eat a balanced dinner</strong> - Include complex carbs, protein, and vegetables for sustained energy.</p><p>5. <strong>Hydrate well</strong> - Drink water throughout the evening.</p><p>6. <strong>Relax before bed</strong> - Do something calming (light reading, gentle music, meditation) rather than intense activities.</p><p>7. <strong>Get 7-8 hours of sleep</strong> - This is more valuable than extra cramming.</p><p><strong>The morning of:</strong></p><p>1. <strong>Wake up early enough</strong> - Allow time for a calm morning without rushing.</p><p>2. <strong>Eat a brain-fueling breakfast</strong> - Include protein, complex carbs, and healthy fats (eggs, oatmeal, nuts, fruit).</p><p>3. <strong>Do a 10-15 minute review</strong> - Glance at key formulas or concepts, but don't try to learn anything new.</p><p>4. <strong>Avoid stressful conversations</strong> - Don't discuss material with anxious peers right before the exam.</p><p>5. <strong>Arrive early</strong> - Get to the exam location 15-20 minutes before start time.</p><p>6. <strong>Use calming techniques</strong> - Practice deep breathing if feeling anxious.</p><p>7. <strong>Use positive self-talk</strong> - Remind yourself of your preparation and capability.</p><p>8. <strong>Visit the restroom</strong> - Do this before the exam starts to avoid disruptions.</p><p>9. <strong>Trust your preparation</strong> - At this point, your knowledge is what it is; focus on clear thinking during the exam.</p>"
+  },
+  30: {
+    category: "Exam Preparation",
+    question: "How do I manage time during exams to complete all questions?",
+    answer: "<p><strong>Time management during exams prevents panic and ensures completion:</strong></p><p>1. <strong>Preview the entire exam first</strong> - Quickly scan all questions, noting point values and difficulty.</p><p>2. <strong>Calculate time allocation</strong> - Divide total minutes by total points to determine minutes per point.</p><p>3. <strong>Allocate time strategically</strong> - Spend more time on high-point questions but don't neglect low-point sections.</p><p>4. <strong>Start with confidence builders</strong> - Answer questions you know well first to build momentum and secure easy points.</p><p>5. <strong>Use a watch or clock</strong> - Check time at regular intervals (e.g., after every 5 questions or every 15 minutes).</p><p>6. <strong>Pace yourself</strong> - If spending too long on one question, mark it and move on.</p><p>7. <strong>Write something for every question</strong> - Even if unsure, provide a partial answer; you can return if time permits.</p><p>8. <strong>Use abbreviations and bullet points</strong> when appropriate to save time while maintaining clarity.</p><p>9. <strong>Set mini-deadlines</strong> - 'By 30 minutes, I should be on question 10.'</p><p>10. <strong>Leave review time</strong> - Reserve last 5-10 minutes to check answers and complete skipped questions.</p><p>11. <strong>Practice with timers</strong> - During study sessions, simulate exam timing to build your pace sense.</p><p>12. <strong>Different strategies for different formats:</strong></p><ul><li><strong>Multiple choice:</strong> Answer all questions first pass, mark uncertain ones, return for review</li><li><strong>Essay exams:</strong> Spend 5-10 minutes outlining before writing</li><li><strong>Problem-solving:</strong> Show work step-by-step but keep moving if stuck</li></ul><p>13. <strong>Stay calm if behind</strong> - Take 3 deep breaths, prioritize remaining questions by point value, and do your best.</p>"
+  },
+  31: {
+    category: "Exam Preparation",
+    question: "How can I stay motivated during long exam periods?",
+    answer: "<p><strong>Sustaining motivation through exam periods requires both practical strategies and mindset shifts:</strong></p><p>1. <strong>Break the period into segments</strong> - Focus on one exam at a time rather than the entire overwhelming period.</p><p>2. <strong>Create a visual progress tracker</strong> - Mark off each study session or exam completed to see progress.</p><p>3. <strong>Schedule rewards</strong> - Plan small treats after each study session and larger rewards after each exam.</p><p>4. <strong>Maintain routines</strong> - Keep consistent wake-up times, meal times, and study locations to conserve decision-making energy.</p><p>5. <strong>Study with peers</strong> - Accountability and shared experience can boost motivation.</p><p>6. <strong>Focus on learning, not just grades</strong> - Remind yourself of interesting concepts or skills you're developing.</p><p>7. <strong>Visualize success</strong> - Imagine how you'll feel after completing exams successfully.</p><p>8. <strong>Use positive self-talk</strong> - Replace 'I have to study' with 'I get to learn' or 'I'm preparing to demonstrate my knowledge.'</p><p>9. <strong>Take care of physical needs</strong> - Regular meals, hydration, exercise, and sleep maintain energy levels.</p><p>10. <strong>Limit social media comparison</strong> - Others' posts about being done or having fun can demotivate; focus on your journey.</p><p>11. <strong>Create a motivating study environment</strong> - Use inspirational quotes, good lighting, and organized materials.</p><p>12. <strong>Remember your 'why'</strong> - Connect exam preparation to your larger goals (degree, career, personal growth).</p><p>13. <strong>Practice self-compassion</strong> - Acknowledge this is challenging, and it's okay to have unmotivated moments.</p><p>14. <strong>Mix up study methods</strong> - Variety prevents boredom and maintains engagement.</p><p>15. <strong>Celebrate small victories</strong> - Completing a study guide, mastering a difficult concept, or finishing a practice exam all deserve recognition.</p>"
+  },
+  32: {
+    category: "Health & Wellness",
+    question: "How can I maintain a healthy lifestyle with a busy college schedule?",
+    answer: "<p><strong>A healthy college lifestyle is about sustainable habits, not perfection:</strong></p><p>1. <strong>Schedule health like an important class</strong> - Block time for meals, exercise, and sleep in your calendar.</p><p>2. <strong>Start with one habit at a time</strong> - Don't try to overhaul everything; begin with the most impactful change (often sleep).</p><p>3. <strong>Incorporate movement throughout the day</strong> - Walk between classes, take stairs, stretch during study breaks.</p><p>4. <strong>Prep simple meals</strong> - Cook larger batches on weekends, keep healthy snacks available, and use slow cookers or instant pots.</p><p>5. <strong>Hydrate strategically</strong> - Keep a water bottle with you and refill at drinking fountains between classes.</p><p>6. <strong>Practice 'good enough' healthy eating</strong> - When busy, choose the healthier option available rather than perfect nutrition.</p><p>7. <strong>Use campus resources</strong> - Most colleges offer free gym access, wellness workshops, counseling, and sometimes nutrition counseling.</p><p>8. <strong>Combine activities</strong> - Study on an exercise bike, have walking meetings with friends, or listen to lectures while cooking.</p><p>9. <strong>Prioritize sleep</strong> - Protect 7-8 hours nightly; it affects everything from immunity to cognition to mood.</p><p>10. <strong>Build a supportive environment</strong> - Surround yourself with health-conscious friends and remove barriers to healthy choices.</p><p>11. <strong>Listen to your body</strong> - Rest when tired, eat when hungry, and address health concerns early rather than pushing through.</p><p>12. <strong>Be flexible</strong> - Some weeks will be healthier than others; aim for consistency over time, not daily perfection.</p>"
+  },
+  33: {
+    category: "Health & Wellness",
+    question: "What are quick and healthy meal options for busy students?",
+    answer: "<p><strong>Healthy eating in college requires planning and simple recipes:</strong></p><p><strong>Breakfast options:</strong></p><ul><li><strong>Overnight oats</strong> - Mix oats, milk, yogurt, and fruit in a jar the night before</li><li><strong>Smoothies</strong> - Keep frozen fruit, spinach, and protein powder on hand</li><li><strong>Hard-boiled eggs</strong> - Cook a batch weekly for quick protein</li><li><strong>Whole grain toast</strong> with nut butter and banana</li></ul><p><strong>Lunch/dinner options:</strong></p><ul><li><strong>Grain bowls</strong> - Cook quinoa or rice once, add canned beans, frozen veggies, and sauce</li><li><strong>Sheet pan meals</strong> - Roast veggies and protein together with minimal cleanup</li><li><strong>Stir-fries</strong> - Quick cooking with frozen mixed vegetables and tofu/chicken</li><li><strong>Salad jars</strong> - Layer dressing, sturdy veggies, proteins, then greens for grab-and-go meals</li><li><strong>Healthy wraps</strong> - Whole grain tortillas with hummus, veggies, and lean protein</li></ul><p><strong>Snack options:</strong></p><ul><li>Greek yogurt with fruit</li><li>Apple slices with peanut butter</li><li>Mixed nuts and dried fruit</li><li>Baby carrots and hummus</li><li>String cheese and whole grain crackers</li></ul><p><strong>Time-saving strategies:</strong></p><p>1. <strong>Batch cook on weekends</strong> - Prepare grains, proteins, and chopped veggies for the week.</p><p>2. <strong>Use frozen ingredients</strong> - Frozen fruits, vegetables, and cooked grains save prep time.</p><p>3. <strong>Invest in kitchen basics</strong> - Slow cooker, rice cooker, or instant pot for hands-off cooking.</p><p>4. <strong>Keep a well-stocked pantry</strong> - Canned beans, tuna, whole grains, spices, and healthy sauces.</p><p>5. <strong>Cook with roommates</strong> - Share meals and divide cooking responsibilities.</p><p>6. <strong>Use campus meal plans strategically</strong> - Choose healthier options when eating on campus.</p>"
+  },
+  34: {
+    category: "Health & Wellness",
+    question: "How much sleep do I really need, and how can I improve my sleep quality?",
+    answer: "<p><strong>Sleep is non-negotiable for academic performance and health:</strong></p><p><strong>How much sleep:</strong></p><ul><li><strong>Young adults (18-25)</strong> need 7-9 hours per night consistently</li><li>Some individuals may need closer to 9 hours for optimal function</li><li>Consistency matters as much as quantity - regular bed/wake times are crucial</li></ul><p><strong>Improving sleep quality:</strong></p><p>1. <strong>Establish a consistent schedule</strong> - Go to bed and wake up at similar times daily, even weekends.</p><p>2. <strong>Create a pre-sleep routine</strong> - Wind down for 30-60 minutes with calming activities (reading, light stretching, meditation).</p><p>3. <strong>Optimize your sleep environment</strong> - Cool (65-68°F), dark, and quiet room. Consider blackout curtains, eye mask, or white noise.</p><p>4. <strong>Limit screens before bed</strong> - Blue light suppresses melatonin; stop using devices 1 hour before bed or use blue light filters.</p><p>5. <strong>Manage caffeine intake</strong> - Avoid caffeine after 2 PM or at least 8 hours before bedtime.</p><p>6. <strong>Be mindful of alcohol</strong> - While it may help you fall asleep, it disrupts sleep quality later in the night.</p><p>7. <strong>Exercise regularly</strong> - But avoid vigorous exercise within 3 hours of bedtime.</p><p>8. <strong>Get morning light exposure</strong> - Natural light helps regulate your circadian rhythm.</p><p>9. <strong>Limit naps</strong> - If needed, keep naps under 30 minutes and before 3 PM.</p><p>10. <strong>Use your bed only for sleep and intimacy</strong> - Don't study, eat, or watch TV in bed.</p><p>11. <strong>Manage stress</strong> - Journal or practice relaxation techniques if racing thoughts keep you awake.</p><p>12. <strong>Address sleep issues promptly</strong> - If you consistently struggle despite good habits, consult a healthcare provider about potential sleep disorders.</p><p><strong>For exam periods:</strong> Don't sacrifice sleep for extra studying - sleep consolidates memory and improves exam performance more than last-minute cramming.</p>"
+  },
+  35: {
+    category: "Health & Wellness",
+    question: "How can I incorporate exercise into my routine without it feeling like a chore?",
+    answer: "<p><strong>Making exercise enjoyable ensures consistency:</strong></p><p>1. <strong>Find activities you genuinely enjoy</strong> - Don't force yourself to run if you hate it; try dancing, swimming, hiking, or team sports instead.</p><p>2. <strong>Start small and build gradually</strong> - Begin with 10-15 minute sessions, not hour-long workouts.</p><p>3. <strong>Incorporate movement into daily life</strong> - Walk or bike to class, take stairs, do bodyweight exercises during study breaks.</p><p>4. <strong>Use the 'just show up' rule</strong> - Commit to putting on workout clothes and getting to the gym; you can leave after 10 minutes if you really want to.</p><p>5. <strong>Make it social</strong> - Exercise with friends, join intramural sports, or take group fitness classes.</p><p>6. <strong>Combine with entertainment</strong> - Watch shows while on exercise equipment, listen to podcasts or audiobooks while walking.</p><p>7. <strong>Schedule it like an appointment</strong> - Block exercise time in your calendar and treat it as non-negotiable.</p><p>8. <strong>Vary your routine</strong> - Try different activities to prevent boredom: yoga one day, swimming another, hiking on weekends.</p><p>9. <strong>Track progress meaningfully</strong> - Note how you feel (energy, mood, sleep) rather than just weight or appearance.</p><p>10. <strong>Use campus resources</strong> - Most colleges have free gyms, pools, fitness classes, intramural sports, and outdoor equipment rentals.</p><p>11. <strong>Reward yourself</strong> - After consistent exercise, treat yourself to something enjoyable (not food-based if possible).</p><p>12. <strong>Reframe your mindset</strong> - View exercise as self-care and stress relief rather than punishment or obligation.</p><p>13. <strong>Accept imperfect consistency</strong> - Some movement is better than none; missing a day isn't failure, just a temporary break.</p><p><strong>Time-efficient options:</strong> 15-minute high-intensity interval training (HIIT), 20-minute yoga flows, walking meetings with friends, or exercise study breaks between classes.</p>"
+  },
+  36: {
+    category: "Health & Wellness",
+    question: "What are signs of mental health issues I should watch for in myself and friends?",
+    answer: "<p><strong>Recognizing mental health concerns early allows for timely support:</strong></p><p><strong>Signs to watch for in yourself and others:</strong></p><p>1. <strong>Emotional changes:</strong></p><ul><li>Persistent sadness, tearfulness, or hopelessness</li><li>Excessive worry, anxiety, or panic attacks</li><li>Irritability, anger outbursts, or mood swings</li><li>Feeling emotionally numb or disconnected</li></ul><p>2. <strong>Behavioral changes:</strong></p><ul><li>Withdrawing from friends, family, and activities</li><li>Significant changes in sleep (too much or too little)</li><li>Major appetite or weight changes</li><li>Increased use of alcohol, drugs, or other substances</li><li>Neglecting personal hygiene or responsibilities</li><li>Self-harm behaviors or talking about suicide</li></ul><p>3. <strong>Cognitive changes:</strong></p><ul><li>Difficulty concentrating, remembering, or making decisions</li><li>Negative or distorted thinking patterns</li><li>Excessive guilt or self-criticism</li><li>Thoughts of death or suicide</li></ul><p>4. <strong>Physical changes:</strong></p><ul><li>Unexplained aches, pains, or digestive issues</li><li>Constant fatigue or low energy</li><li>Agitation or restlessness</li></ul><p><strong>When to seek help:</strong></p><p>1. <strong>For yourself:</strong> If symptoms persist for 2+ weeks and interfere with daily functioning, contact campus counseling services.</p><p>2. <strong>For a friend:</strong> Express concern gently, listen without judgment, and encourage professional help.</p><p><strong>How to approach someone:</strong></p><p>1. <strong>Choose a private, calm time</strong> to talk</p><p>2. <strong>Use 'I' statements</strong> - 'I've noticed you seem down lately, and I'm concerned.'</p><p>3. <strong>Listen without trying to fix</strong> - Sometimes being heard is what's most needed</p><p>4. <strong>Encourage professional support</strong> - Normalize seeking help: 'The counseling center has helped many students with similar feelings.'</p><p>5. <strong>In crisis situations:</strong> If someone expresses suicidal thoughts or plans, don't leave them alone. Contact emergency services or campus crisis line immediately.</p><p><strong>Remember:</strong> Mental health issues are common (1 in 4-5 students experience them) and treatable. Early intervention leads to better outcomes.</p>"
+  },
+  37: {
+    category: "Health & Wellness",
+    question: "How do I establish healthy boundaries with friends and social commitments?",
+    answer: "<p><strong>Healthy boundaries protect your time, energy, and well-being:</strong></p><p>1. <strong>Know your limits</strong> - Identify what drains you versus energizes you, and what you genuinely have capacity for.</p><p>2. <strong>Practice saying no gracefully</strong> - 'I'd love to, but I need to focus on my studies this weekend' or 'Thanks for inviting me, but I need some downtime.'</p><p>3. <strong>Schedule downtime</strong> - Block 'me time' in your calendar and treat it as seriously as other commitments.</p><p>4. <strong>Set communication boundaries</strong> - Designate times when you won't check messages or be available for socializing.</p><p>5. <strong>Be clear about academic priorities</strong> - Let friends know when you have important deadlines and need to focus.</p><p>6. <strong>Establish roommate boundaries early</strong> - Discuss study time, quiet hours, guests, and shared space expectations.</p><p>7. <strong>Use the 'fence' metaphor</strong> - Good boundaries are like a fence with a gate: they protect your space but allow chosen connections.</p><p>8. <strong>Recognize guilt as a signal, not a guide</strong> - Feeling guilty when setting boundaries is normal but doesn't mean you're doing something wrong.</p><p>9. <strong>Offer alternatives when saying no</strong> - 'I can't go out tonight, but how about coffee tomorrow?'</p><p>10. <strong>Notice one-sided relationships</strong> - Healthy friendships involve reciprocal giving and taking.</p><p>11. <strong>Practice self-validation</strong> - Your needs are valid even if others don't understand them.</p><p>12. <strong>Start small</strong> - Begin with low-stakes boundary setting and build confidence.</p><p>13. <strong>Communicate boundaries clearly but kindly</strong> - 'I value our friendship, and to be fully present when we hang out, I need to finish my work first.'</p><p>14. <strong>Expect some pushback</strong> - People accustomed to your previous patterns may test new boundaries; remain consistent.</p><p>15. <strong>Model respect for others' boundaries</strong> - This creates a culture where boundaries are normalized.</p><p><strong>Remember:</strong> Boundaries aren't walls to keep people out but guidelines for how you want to be treated. They enable healthier, more sustainable relationships.</p>"
+  }
+}; 
+      // Additional responses would continue for all 37 questions...
+    
+    // For brevity, I've included detailed responses for the first 13 questions
+    // The remaining questions would have similar detailed responses
+
+    // DOM Elements
+    const categorySection = document.getElementById('categorySection');
+    const questionsSection = document.getElementById('questionsSection');
+    const questionsList = document.getElementById('questionsList');
+    const questionsTitle = document.getElementById('questionsTitle');
+    const backBtn = document.getElementById('backBtn');
+    const qInput = document.getElementById('qInput');
+    const askBtn = document.getElementById('askBtn');
+    const answerArea = document.getElementById('answerArea');
+    const answerText = document.getElementById('answerText');
+    const answerCategory = document.getElementById('answerCategory');
+    const categoriesList = document.getElementById('categoriesList');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+
+    // Current state
+    let currentCategory = null;
+
+    // Initialize event listeners
+    function init() {
+      // Category selection
+      categoriesList.addEventListener('click', function(e) {
+        const card = e.target.closest('.category-card');
+        if (!card) return;
+        
+        const category = card.dataset.category;
+        selectCategory(category);
+      });
+
+      // Back button
+      backBtn.addEventListener('click', goBackToCategories);
+
+      // Ask button
+      askBtn.addEventListener('click', function() {
+        const val = qInput.value.trim();
+        if (!val) {
+          alert('Please enter a question or select one from the categories.');
+          return;
+        }
+        
+        // Check if input is a number between 1-37
+        if (/^[1-9]$|^[1-3][0-7]$/.test(val)) {
+          sendQuestion(val);
+        } else {
+          // Custom question
+          sendCustomQuestion(val);
+        }
+      });
+
+      // Enter key in input
+      qInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          askBtn.click();
+        }
+      });
+
+      // Show welcome message
+      setTimeout(() => {
+        answerCategory.textContent = "Welcome";
+        answerText.innerHTML = `
+          <p><strong>Welcome to Achievo, your academic assistant!</strong></p>
+          <p>I'm Lexi, here to help you navigate college challenges. I can provide guidance on:</p>
+          <ul>
+            <li><strong>Time Management</strong> - Balancing academics, work, and social life</li>
+            <li><strong>Stress Management</strong> - Coping with anxiety, pressure, and overwhelm</li>
+            <li><strong>Study Techniques</strong> - Effective learning strategies for different subjects</li>
+            <li><strong>College Life</strong> - Adjusting to campus, making friends, and more</li>
+            <li><strong>Exam Preparation</strong> - Managing stress and optimizing performance</li>
+            <li><strong>Health & Wellness</strong> - Maintaining physical and mental health</li>
+          </ul>
+          <p>Start by selecting a category above or type your question directly.</p>
+        `;
+        answerArea.classList.add('show');
+      }, 1000);
+    }
+
+    // Category selection handler
+    function selectCategory(category) {
+      if (!categoriesData[category]) return;
+      
+      currentCategory = category;
+      const categoryData = categoriesData[category];
+      
+      // Update UI
+      categorySection.style.display = 'none';
+      questionsSection.classList.add('active');
+      questionsTitle.textContent = categoryData.title;
+      
+      // Update progress indicator
+      step1.classList.remove('active');
+      step2.classList.add('active');
+      
+      // Clear previous questions
+      questionsList.innerHTML = '';
+      
+      // Add questions for this category
+      categoryData.questions.forEach((q, index) => {
+        const questionBtn = document.createElement('button');
+        questionBtn.className = 'question-btn';
+        questionBtn.dataset.q = q.id;
+        questionBtn.innerHTML = `
+          <span class="question-num">${index + 1}</span>
+          ${q.text}
+        `;
+        
+        questionBtn.addEventListener('click', function() {
+          sendQuestion(q.id.toString());
+        });
+        
+        questionsList.appendChild(questionBtn);
+      });
+      
+      // Scroll to questions
+      questionsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Go back to categories
+    function goBackToCategories() {
+      categorySection.style.display = 'block';
+      questionsSection.classList.remove('active');
+      currentCategory = null;
+      
+      // Update progress indicator
+      step1.classList.add('active');
+      step2.classList.remove('active');
+      
+      // Clear input
+      qInput.value = '';
+      
+      // Scroll to top
+      categorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Send question
+    function sendQuestion(qNumber) {
+      // Update input field with the selected question number
+      qInput.value = qNumber;
+      
+      // Show loading state
+      answerArea.classList.remove('show');
+      answerText.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Thinking...</p>';
+      
+      // Simulate API call delay
+      setTimeout(() => {
+        if (responses[qNumber]) {
+          answerCategory.textContent = responses[qNumber].category || "General Advice";
+          answerText.innerHTML = responses[qNumber].answer || 
+            `<p>I don't have a specific answer for question ${qNumber} yet, but here's general advice:</p>
+             <p>Break the problem down into smaller steps, seek help from professors or peers, and remember to take care of your wellbeing during stressful times.</p>`;
+          answerArea.classList.add('show');
+          
+          // Scroll to answer
+          answerArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          // Generic response for questions without detailed answers
+          answerCategory.textContent = "General Advice";
+          answerText.innerHTML = `
+            <p>I don't have a specific answer for question ${qNumber} yet, but here's some general guidance:</p>
+            <ul>
+              <li><strong>Break it down</strong> - Large challenges become manageable when divided into small steps</li>
+              <li><strong>Seek resources</strong> - Your college likely has advisors, counselors, or tutors who can help</li>
+              <li><strong>Connect with peers</strong> - Other students may be facing similar challenges</li>
+              <li><strong>Prioritize self-care</strong> - Adequate sleep, nutrition, and breaks improve problem-solving ability</li>
+            </ul>
+            <p>For more specific advice, try selecting one of the numbered questions from the categories above.</p>
+          `;
+          answerArea.classList.add('show');
+        }
+      }, 600);
+    }
+
+    // Send custom question
+    function sendCustomQuestion(question) {
+      // Show loading state
+      answerArea.classList.remove('show');
+      answerText.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Processing your question...</p>';
+      
+      // Simulate API processing delay
+      setTimeout(() => {
+        answerCategory.textContent = "Custom Question";
+        
+        // Provide a generic response for custom questions
+        answerText.innerHTML = `
+          <p><strong>Thanks for your question: "${escapeHtml(question)}"</strong></p>
+          <p>While I'm designed to answer specific academic questions, I can offer general guidance:</p>
+          <ul>
+            <li><strong>Break it down</strong> - Large challenges become manageable when divided into small steps</li>
+            <li><strong>Seek resources</strong> - Your college likely has advisors, counselors, or tutors who can help</li>
+            <li><strong>Connect with peers</strong> - Other students may be facing similar challenges</li>
+            <li><strong>Prioritize self-care</strong> - Adequate sleep, nutrition, and breaks improve problem-solving ability</li>
+            <li><strong>Communicate needs</strong> - Don't hesitate to ask professors for clarification or extensions when needed</li>
+            <li><strong>Use campus services</strong> - Most colleges offer free counseling, tutoring, and academic advising</li>
+          </ul>
+          <p>For more specific advice, try selecting one of the questions from the categories above.</p>
+        `;
+        
+        answerArea.classList.add('show');
+        
+        // Scroll to answer
+        answerArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 800);
+    }
+
+    // Utility function to escape HTML
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Footer link functions
+    function showAbout() {
+      answerCategory.textContent = "About Achievo";
+      answerText.innerHTML = `
+        <p><strong>Achievo Academic Chatbot</strong> is an AI-powered assistant designed to support college students through their academic journey.</p>
+        <p><strong>Our mission:</strong> To provide accessible, personalized guidance for common academic challenges including time management, study techniques, exam preparation, and college life adjustments.</p>
+        <p><strong>Features:</strong></p>
+        <ul>
+          <li>6 comprehensive support categories</li>
+          <li>37 common college challenge questions</li>
+          <li>Evidence-based academic strategies</li>
+          <li>Two-step selection for easy navigation</li>
+          <li>24/7 availability for instant support</li>
+        </ul>
+        <p>Achievo is presented in collaboration with BMS College to enhance student support services and promote academic success.</p>
+      `;
+      answerArea.classList.add('show');
+      answerArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showPrivacy() {
+      answerCategory.textContent = "Privacy Policy";
+      answerText.innerHTML = `
+        <p><strong>Achievo Privacy Policy</strong></p>
+        <p>Your privacy is important to us. This chatbot:</p>
+        <ul>
+          <li>Does not store personal identifying information</li>
+          <li>Does not track users across sessions</li>
+          <li>Does not share data with third parties</li>
+          <li>Uses anonymized usage data to improve responses</li>
+          <li>Operates entirely within your browser session</li>
+        </ul>
+        <p>All questions and responses are processed in real-time and not permanently stored. For formal academic support, please contact your college's student services department.</p>
+        <p>This is a demonstration interface for academic purposes only.</p>
+      `;
+      answerArea.classList.add('show');
+      answerArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showContact() {
+      answerCategory.textContent = "Contact Support";
+      answerText.innerHTML = `
+        <p><strong>Academic Support Contacts</strong></p>
+        <p>While Achievo provides general guidance, for specific concerns contact:</p>
+        <ul>
+          <li><strong>Academic Advising:</strong> advising@bmscollege.edu</li>
+          <li><strong>Counseling Services:</strong> counseling@bmscollege.edu | Phone: (555) 123-4567</li>
+          <li><strong>Tutoring Center:</strong> tutoring@bmscollege.edu</li>
+          <li><strong>Student Affairs:</strong> studentaffairs@bmscollege.edu</li>
+          <li><strong>Technical Support:</strong> techsupport@bmscollege.edu</li>
+        </ul>
+        <p><strong>Office Hours:</strong> Monday-Friday, 9:00 AM - 5:00 PM</p>
+        <p><strong>Campus Location:</strong> Student Services Building, Room 205</p>
+        <p>For emergencies outside office hours, contact campus security at (555) 911-9111</p>
+      `;
+      answerArea.classList.add('show');
+      answerArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Initialize the chatbot
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
