@@ -1,14 +1,12 @@
--- Achievo Initial Data
--- Save this as data.sql
 
 -- Insert categories
 INSERT OR IGNORE INTO categories (key, name, description, icon, color) VALUES 
-('time-management', 'Time Management', 'Balancing classes, study, work and social life', '⏰', '#3B82F6'),
-('stress-management', 'Stress Management', 'Coping with anxiety, pressure and overwhelm', '🧠', '#EF4444'),
-('study-techniques', 'Study Techniques', 'Effective learning, note-taking and exam prep', '🎓', '#10B981'),
+('time-management', 'Time Management', 'Balancing classes, study, work and social life', '#3B82F6'),
+('stress-management', 'Stress Management', 'Coping with anxiety, pressure and overwhelm', '#EF4444'),
+('study-techniques', 'Study Techniques', 'Effective learning, note-taking and exam prep', '#10B981'),
 ('college-life', 'College Life', 'Adjusting to campus, friends, and living away', '🏠', '#F59E0B'),
-('exam-preparation', 'Exam Preparation', 'Strategies for tests, finals and performance', '📝', '#8B5CF6'),
-('wellness', 'Health & Wellness', 'Maintaining physical and mental health', '❤️', '#EC4899');
+('exam-preparation', 'Exam Preparation', 'Strategies for tests, finals and performance', '#8B5CF6'),
+('wellness', 'Health & Wellness', 'Maintaining physical and mental health', '#EC4899');
 
 -- Insert sample questions for time-management
 INSERT OR IGNORE INTO questions (category_key, question, prompt, tips) VALUES 
