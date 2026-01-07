@@ -1,5 +1,3 @@
--- Achievo Database Schema
--- Save this as schema.sql
 
 -- Categories table
 CREATE TABLE IF NOT EXISTS categories (
